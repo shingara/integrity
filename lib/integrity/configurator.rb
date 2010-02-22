@@ -30,7 +30,7 @@ module Integrity
           Integrity::DelayedBuilder.new(args)
         when :resque
           require "integrity/builder/resque"
-          Integrity::ResqueBuilder
+          Integrity::ResqueBuilder.new(args)
         else
           raise ArgumentError, "Unknown builder #{name}"
         end

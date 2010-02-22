@@ -1,17 +1,20 @@
 require "resque"
 
 module Integrity
-  module ResqueBuilder
-    def self.call(build)
+  class ResqueBuilder
+    def initialize(namespace='')
+      Resque.redis.namespace = namespace
+    end
+    def call(build)
       Resque.enqueue BuildJob, build.id
     end
+  end
 
-    module BuildJob
-      @queue = :integrity
+  module BuildJob
+    @queue = :integrity
 
-      def self.perform(build)
-        Builder.build Build.get(build)
-      end
+    def self.perform(build)
+      Builder.build Build.get(build)
     end
   end
 end
